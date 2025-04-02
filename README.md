@@ -12,7 +12,8 @@ Installation
 
     Clone the repository:
 
-git clone https://github.com/your-username/god-mode-ai.git
+git clone https://github.com/SCOTTYJJ/god-mod-ai-Network-secuity.git
+god-mode-ai.git
 cd god-mode-ai
 
 Install dependencies:
