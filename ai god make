@@ -1,0 +1,90 @@
+import tkinter as tk
+from tkinter import scrolledtext
+import subprocess
+import threading
+import random
+import time
+import numpy as np
+from sklearn.ensemble import IsolationForest
+
+# Global Variables
+ethical_mode = True
+ai_model = IsolationForest(contamination=0.2)
+
+# Simulated network data for AI learning
+network_traffic = np.array([
+    [100, 200, 0],  
+    [500, 1000, 1], 
+    [50, 60, 0],    
+    [700, 1400, 1]
+])
+ai_model.fit(network_traffic)
+
+# Create GUI
+root = tk.Tk()
+root.title("God Mode AI - Network Security")
+root.geometry("800x500")
+root.configure(bg="black")
+
+# Title Label
+title_label = tk.Label(root, text="GOD MODE AI", fg="green", bg="black", font=("Courier", 20, "bold"))
+title_label.pack()
+
+# Log Output
+log_output = scrolledtext.ScrolledText(root, width=90, height=20, bg="black", fg="green", font=("Courier", 10))
+log_output.pack()
+
+# Functions
+def activate_god_mode():
+    log_output.insert(tk.END, "[+] God Mode Activated! AI is monitoring threats...\n", "green")
+    log_output.yview(tk.END)
+    threading.Thread(target=simulate_ddos_monitoring, daemon=True).start()
+
+def open_wireshark():
+    log_output.insert(tk.END, "[+] Opening Wireshark...\n")
+    log_output.yview(tk.END)
+    threading.Thread(target=lambda: subprocess.run(["wireshark"]), daemon=True).start()
+
+def toggle_ethical_mode():
+    global ethical_mode
+    ethical_mode = not ethical_mode
+    mode = "Ethical Mode" if ethical_mode else "Active Defense Mode"
+    log_output.insert(tk.END, f"[+] Switched to {mode}\n", "green")
+    log_output.yview(tk.END)
+
+def simulate_ddos_monitoring():
+    while True:
+        time.sleep(random.randint(3, 7))
+        attack_ip = f"192.168.1.{random.randint(1, 255)}"
+        log_output.insert(tk.END, f"[ALERT] DDoS Attack Detected from {attack_ip}!\n", "red")
+        log_output.yview(tk.END)
+
+        if not ethical_mode:
+            log_output.insert(tk.END, f"[+] AI Blocking {attack_ip}\n", "green")
+
+def analyze_traffic():
+    new_traffic = np.array([[random.randint(100, 1000), random.randint(500, 2000), 1]])
+    prediction = ai_model.predict(new_traffic)
+
+    if prediction[0] == -1:
+        log_output.insert(tk.END, "⚠️ AI Detected Suspicious Network Activity!\n", "red")
+    else:
+        log_output.insert(tk.END, "✅ AI Confirms Normal Traffic.\n", "green")
+
+    log_output.yview(tk.END)
+
+# Buttons
+button1 = tk.Button(root, text="Activate God Mode", command=activate_god_mode, bg="green", fg="black", font=("Courier", 12, "bold"))
+button1.pack()
+
+button2 = tk.Button(root, text="Open Wireshark", command=open_wireshark, bg="green", fg="black", font=("Courier", 12, "bold"))
+button2.pack()
+
+button3 = tk.Button(root, text="Toggle Ethical Mode", command=toggle_ethical_mode, bg="green", fg="black", font=("Courier", 12, "bold"))
+button3.pack()
+
+button4 = tk.Button(root, text="AI Traffic Analysis", command=analyze_traffic, bg="green", fg="black", font=("Courier", 12, "bold"))
+button4.pack()
+
+# Run GUI
+root.mainloop()
